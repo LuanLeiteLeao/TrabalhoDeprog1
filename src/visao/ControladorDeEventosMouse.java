@@ -7,16 +7,20 @@ import javax.swing.JOptionPane;
 
 public class ControladorDeEventosMouse implements MouseListener {
 	private JanelaPrincipal janela;
-	public ControladorDeEventosMouse(JanelaPrincipal jan) {
-		this.janela = jan;
+	private InsercaoAandEdicaoPanel janela2;
+	
+	public ControladorDeEventosMouse(JanelaPrincipal jan,InsercaoAandEdicaoPanel jan2) {
+		janela = jan;
+		janela2=jan2;
 	}
+	
 	
 	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		
-		//String[] retorno = janela.retornarLinhaDaTabela(); 
-		janela.escreveNaTelaDeCadastro(janela.retornarLinhaDaTabela());
+		
+		janela2.escreveNaTelaDeCadastro(janela.retornarLinhaDaTabela());
 	}
 
 	@Override

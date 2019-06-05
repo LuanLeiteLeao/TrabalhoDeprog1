@@ -48,18 +48,13 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class JanelaPrincipal {
 
+
+	
+	
 	private JFrame principalFrame;
-	private JTextField escreverNomeDoBruxo;
-	private JTextField escreverNomeDoAnimal;
-	private static final String FONTE = "Courier New";
-	private static final int TAM= 16;
-	private static final int COLUNAS= 5;
-	private JTextField escreveIdade;
-	private JCheckBox genetica;
-	private JComboBox animalTipo;
-	private JComboBox casas;
 	private JTabbedPane tabbedPanePrincipal_1;
 	private JTable tabelapesquisa2;
+	private InsercaoAandEdicaoPanel manterPanelInsercao;
 	
 	
 	
@@ -97,12 +92,15 @@ public class JanelaPrincipal {
 		
 		JTabbedPane tabbedPanePrincipal = manterTabbedPanePrincipal(panelPrincipal);
 		
-		manterPanelInserir(tabbedPanePrincipal);
+		manterPanelInsercao = new InsercaoAandEdicaoPanel(tabbedPanePrincipal,this);
+		//manterPanelInserir(tabbedPanePrincipal);
 		
 		manterPanelPesquisa(tabbedPanePrincipal);
 	}
-
-
+ 
+	
+	
+	
 
 	private void manterPanelPesquisa(JTabbedPane tabbedPanePrincipal) {
 		JPanel panelPesquisa = new JPanel();
@@ -113,7 +111,7 @@ public class JanelaPrincipal {
 		JButton btnEditar = new JButton("Editar");
 		
 		JButton btnExcluir = new JButton("Excluir");
-		btnExcluir.addActionListener(new ControladorDeEventos(this));
+		//btnExcluir.addActionListener(new ControladorDeEventos(this));
 		GroupLayout gl_panelPesquisa = new GroupLayout(panelPesquisa);
 		gl_panelPesquisa.setHorizontalGroup(
 			gl_panelPesquisa.createParallelGroup(Alignment.LEADING)
@@ -140,7 +138,7 @@ public class JanelaPrincipal {
 		);
 		
 		tabelapesquisa2 = new JTable();
-        tabelapesquisa2.addMouseListener(new ControladorDeEventosMouse(this));
+        tabelapesquisa2.addMouseListener(new ControladorDeEventosMouse(this,manterPanelInsercao));
 		tabelapesquisa2.setFillsViewportHeight(true);
 		tabelapesquisa2.setRowSelectionAllowed(false);
 		tabelapesquisa2.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -149,18 +147,24 @@ public class JanelaPrincipal {
 		
 		
 		
+		pesquisaECriaTabela();
+		tabelapesquisa.setViewportView(tabelapesquisa2);
+		panelPesquisa.setLayout(gl_panelPesquisa);
+	}
+
+
+
+	private void pesquisaECriaTabela() {
 		InteracoesBruxosNoDB tabelaSql;
 		tabelaSql = new InteracoesBruxosNoDB();
 		
 		
 		criaTabel(tabelaSql.tabelaDaPesquisa());
-		tabelapesquisa.setViewportView(tabelapesquisa2);
-		panelPesquisa.setLayout(gl_panelPesquisa);
 	}
 
 	
 
-	public void criaTabel(String [][] tabelaSql) {
+	private void criaTabel(String [][] tabelaSql) {
 		tabelapesquisa2.setModel(new DefaultTableModel(
 				tabelaSql,
 			new String[] {
@@ -170,6 +174,12 @@ public class JanelaPrincipal {
 		;
 	}
 
+	public void atualizaTabela() {
+		
+			 pesquisaECriaTabela();
+		
+	}
+	
 	public Bruxo retornarLinhaDaTabela() {
 		Bruxo classeReferencia = new Bruxo();
 		
@@ -185,71 +195,7 @@ public class JanelaPrincipal {
 		return classeReferencia;
 	}
 
-	private void manterPanelInserir(JTabbedPane tabbedPanePrincipal) {
-		
-		JPanel panelInserir = new JPanel();
-		tabbedPanePrincipal.addTab("Cadastrar", null, panelInserir, null);
-		panelInserir.setLayout(new MigLayout("", "[27px][194px,grow][][][][][][grow][][][][][grow]", "[14px][][][][][][][]"));
-		{
-			JLabel nomeDobruxo = new JLabel("Nome");
-			panelInserir.add(nomeDobruxo, "cell 0 0,alignx center,aligny center");
-		}
-		
-		{
-			escreverNomeDoBruxo = new JTextField();
-			escreverNomeDoBruxo.setFont(new Font(FONTE, Font.PLAIN, TAM));
-			panelInserir.add(escreverNomeDoBruxo, "cell 1 0,growx,aligny top");
-			escreverNomeDoBruxo.setColumns(10);
-		}
-		{
-			genetica = new JCheckBox("Mesti\u00E7o");
-			panelInserir.add(genetica, "cell 4 0");
-		}
-		{
-			casas = new JComboBox();
-			casas.setModel(new DefaultComboBoxModel(new String[] {"Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"}));
-			casas.setBackground(new Color(255, 255, 255));
-			panelInserir.add(casas, "cell 7 0,growx");
-		}
-		{
-			JLabel apelidoDoAnimal = new JLabel("Apelido do Animal");
-			panelInserir.add(apelidoDoAnimal, "cell 0 1,alignx trailing");
-		}
-		{
-			escreverNomeDoAnimal = new JTextField();
-			escreverNomeDoAnimal.setFont(new Font(FONTE, Font.PLAIN, TAM));
-			panelInserir.add(escreverNomeDoAnimal, "cell 1 1,growx");
-			escreverNomeDoAnimal.setColumns(10);
-		}
-		
-		{
-			animalTipo = new JComboBox();
-			animalTipo.setModel(new DefaultComboBoxModel(new String[] {"Gato", "Fenix", "Coruja", "Aranha", "Coelho ", "Sapo ", "Rato"}));
-			panelInserir.add(animalTipo, "cell 4 1,growx");
-		}
-		{
-			JLabel idade = new JLabel("Idade");
-			panelInserir.add(idade, "cell 5 1");
-		}
-		{
-			escreveIdade = new JTextField();
-			panelInserir.add(escreveIdade, "cell 7 1,alignx right");
-			escreveIdade.setColumns(10);
-		}
-		{
-			JButton btnSalvar = new JButton("Salvar");
-			btnSalvar.addActionListener(new ControladorDeEventos(this));
-			panelInserir.add(btnSalvar, "cell 0 7");
-			
-		}
-		{
-			JButton btnCancelar = new JButton("Cancelar");			
-			btnCancelar.addActionListener(new ControladorDeEventos(this));
-			panelInserir.add(btnCancelar, "cell 4 7");
-		}
-		
-	}
-
+	
 
 
 	private JTabbedPane manterTabbedPanePrincipal(JPanel panelPrincipal) {
@@ -278,60 +224,7 @@ public class JanelaPrincipal {
 	}
 
 	
-	public void escreveNaTelaDeCadastro(Bruxo classeRefeRencia) {
-		//"Nome", "Genetica", "Casa", "Nome do Animal","Raça do Animal"
-		
-		escreverNomeDoBruxo.setText(classeRefeRencia.getNome());
-		genetica.setSelected(classeRefeRencia.getSangue());
-		casas.setSelectedIndex(retornaPocaoComboBox(classeRefeRencia.getCasa(),casas));
-		escreverNomeDoAnimal.setText(classeRefeRencia.getAnimal_nome());
-		animalTipo.setSelectedIndex(retornaPocaoComboBox(classeRefeRencia.getAnimal_tipo(),animalTipo));;
-	    
 	
-	}
-	
-	
-	private int retornaPocaoComboBox(String nome,JComboBox comboBox) {
-		
-		ComboBoxModel model = comboBox.getModel();
-		
-		
-		
-		for (int i = 0;i<model.getSize(); i++) {
-				
 
-			if (model.getElementAt(i).equals(nome)) {
-				return i;
-			}
-		}
-		
-		
-		return 0;
-	}
-	
-	public String getNome() {
-		
-		return escreverNomeDoBruxo.getText();
-	}
-	
-	public String getNomeAnimal() {
-		 return escreverNomeDoAnimal.getText();
-	}
-	
-	public Boolean getGenetica() {
-		return  genetica.isSelected();
-	} 
-	
-	public String getAnimalTipo() {
-		
-		return (String) animalTipo.getSelectedItem();
-	}
-	
-	public String getCasa() {
-		return (String)  casas.getSelectedItem();
-	}
-	
-	public int getIdade(){
-		return Integer.parseInt(escreveIdade.getText());
-	}
+
 }

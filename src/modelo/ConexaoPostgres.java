@@ -62,8 +62,7 @@ public class ConexaoPostgres {
 	
 	
 	
-	public String inserirBruxo(String nome,boolean sangue, String casa
-			,String animalNome ,String animalTipo) {
+	public String inserirBruxo(Bruxo classeRefeRencia) {
 	 
 			
 		
@@ -81,11 +80,11 @@ public class ConexaoPostgres {
 			
 			sql = "insert into bruxo(nome, sangue, casa, animal_nome, animal_tipo)values(?,?,?,?,?)";
 			PreparedStatement pstm = connection.prepareStatement(sql);
-			pstm.setString(1, nome);
-			pstm.setBoolean(2, sangue);
-			pstm.setString(3, casa);
-			pstm.setString(4, animalNome);
-			pstm.setString(5, animalTipo);
+			pstm.setString(1,classeRefeRencia.getNome());
+			pstm.setBoolean(2,classeRefeRencia.getSangue());
+			pstm.setString(3, classeRefeRencia.getCasa());
+			pstm.setString(4, classeRefeRencia.getAnimal_nome());
+			pstm.setString(5,classeRefeRencia.getAnimal_tipo());
 			
 	
 			

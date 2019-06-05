@@ -13,14 +13,12 @@ public class InteracoesBruxosNoDB {
 	
 	
 	
-	public String savalr(String nome,boolean sangue, String casa
-			          ,String animalNome ,String animalTipo) 
+	public String savalr(Bruxo classeReferencia) 
 	{
 		
-		String mensagem=interacao.inserirBruxo(nome, sangue, casa
-				, animalNome ,animalTipo); ;
+		return  interacao.inserirBruxo(classeReferencia); 
 		
-		return mensagem;
+		
 	
 	}
 	
@@ -50,11 +48,7 @@ public class InteracoesBruxosNoDB {
 		
 	}
 	
-	public String dedetar(int id) {
-		String mensagem=interacao.deleta(id);
-		
-		return mensagem;
-	}
+	
 	
 	
 }

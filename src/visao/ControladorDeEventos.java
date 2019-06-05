@@ -7,17 +7,21 @@ import java.lang.invoke.SwitchPoint;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
+import controle.Bruxo;
 import controle.InteracoesBruxosNoDB;
 
 public class ControladorDeEventos implements ActionListener {
-	private JanelaPrincipal janela;
-	private InteracoesBruxosNoDB bancoDeDados;
-	public ControladorDeEventos(JanelaPrincipal jan) {
-		this.janela = jan;
-		 bancoDeDados = new InteracoesBruxosNoDB();
+	private InteracoesBruxosNoDB bancoDeDados = new InteracoesBruxosNoDB();
+	private Bruxo modeloDeClasse;
+	private InsercaoAandEdicaoPanel jan;
+	public ControladorDeEventos(InsercaoAandEdicaoPanel panelInserir) {
+		
+		
+		this.jan=panelInserir ;
+		
 	}
-	
 	
 	
 	@Override
@@ -28,15 +32,11 @@ public class ControladorDeEventos implements ActionListener {
 		
 		if(bt.getText().equalsIgnoreCase("Salvar")) {
 			
-
+			Bruxo B = jan.getBruxo();
 	
-			String mesangem =bancoDeDados.savalr(janela.getNome(), janela.getGenetica(),
-			janela.getCasa(),janela.getNomeAnimal(), janela.getAnimalTipo());				
-			janela.criaTabel(bancoDeDados.tabelaDaPesquisa());
-			
-			janela.escreveNaTelaDeCadastro(null);
+			String mesangem =bancoDeDados.savalr(B);
 			JOptionPane.showMessageDialog(null, mesangem);
-					
+			jan.AtualizaTabela();		
 
 				
 			
@@ -58,7 +58,7 @@ public class ControladorDeEventos implements ActionListener {
 
 	
 	
-	
+
 	
 	
 	
